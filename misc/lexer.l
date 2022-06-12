@@ -1,18 +1,11 @@
 %{
 	#include <cstdio>
 	#include <cstring>
-	#include "parser.h"
 	#include "assembler.hpp"
 
 	int regNum(char* str);
 %}
 %option noyywrap
-NADR halt|iret|ret
-REGD int|push|pop|not
-REGS xchg|add|sub|mul|div|cmp|and|or|xor|test|shl|shr
-BOPR call|jmp|jeq|jne|jgt
-DOPR ldr|str
-
 REG (r[0-7])|sp|pc|psw
 INTLIT [-+]?[1-9][0-9]*
 HEXLIT 0[xX][0-9A-Fa-f]*
@@ -22,11 +15,32 @@ STRING ".*?"
 IDENT [a-zA-Z_\.][a-zA-Z_\.0-9]*
 %%
 {IDENT}:                {yylval.stringv = strdup(yytext); yylval.stringv[strlen(yylval.stringv)-1]='\0'; return LABEL;}
-{NADR}                  {yylval.stringv = strdup(yytext); return NADR;}
-{REGD}                  {yylval.stringv = strdup(yytext); return REGD;}
-{REGS}                  {yylval.stringv = strdup(yytext); return REGS;}
-{BOPR}                  {yylval.stringv = strdup(yytext); return BOPR;}
-{DOPR}                  {yylval.stringv = strdup(yytext); return DOPR;}
+halt                    {return HALT;}
+int                     {return INT;}
+iret                    {return IRET;}
+call                    {return CALL;}
+ret                     {return RET;}
+jmp                     {return JMP;}
+jeq                     {return JEQ;}
+jne                     {return JNE;}
+jgt                     {return JGT;}
+push                    {return PUSH;}
+pop                     {return POP;}
+xchg                    {return XCHG;}
+add                     {return ADD;}
+sub                     {return SUB;}
+mul                     {return MUL;}
+div                     {return DIV;}
+cmp                     {return CMP;}
+not                     {return NOT;}
+and                     {return AND;}
+or                      {return OR;}
+xor                     {return XOR;}
+test                    {return TEST;}
+shl                     {return SHL;}
+shr                     {return SHR;}
+ldr                     {return LDR;}
+str                     {return STR;}
 \.global                {return GLOBAL;}
 \.extern                {return EXTERN;}
 \.section               {return SECTION;}

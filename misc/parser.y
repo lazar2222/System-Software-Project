@@ -1,6 +1,5 @@
 %{
 	#include "lexer.h"
-	#include "parser.h"
 	#include "assembler.hpp"
 %}
 %union {
@@ -8,11 +7,32 @@
 	char *stringv;
 }
 %token <stringv> LABEL
-%token <stringv> NADR
-%token <stringv> REGD
-%token <stringv> REGS
-%token <stringv> BOPR
-%token <stringv> DOPR
+%token HALT
+%token INT
+%token IRET
+%token CALL
+%token RET
+%token JMP
+%token JEQ
+%token JNE
+%token JGT
+%token PUSH
+%token POP
+%token XCHG
+%token ADD
+%token SUB
+%token MUL
+%token DIV
+%token CMP
+%token NOT
+%token AND
+%token OR
+%token XOR
+%token TEST
+%token SHL
+%token SHR
+%token LDR
+%token STR
 %token GLOBAL
 %token EXTERN
 %token SECTION
@@ -47,11 +67,16 @@ symlist: symlist ',' SYM | SYM
 symlitlist: symlitlist ',' symlit | symlit;
 symlit: SYM | LIT;
 expression: symlit | expression '+' expression | expression '-' expression | '(' expression ')';
-instruction: NADR | instregd | instregs | instbopr | instdopr;
-instregd: REGD REG;
-instregs: REGS REG ',' REG;
-instbopr: BOPR boperand;
-instdopr: DOPR REG ',' doperand;
+instruction: nadr | instregd | instregs | instbopr | instdopr;
+instregd: regd REG;
+instregs: regs REG ',' REG;
+instbopr: bopr boperand;
+instdopr: dopr REG ',' doperand;
+nadr: HALT | IRET | RET;
+regd: INT | PUSH | POP | NOT;
+regs: XCHG | ADD | SUB | MUL | DIV | CMP | AND | OR | XOR | TEST | SHL | SHR;
+bopr: CALL | JMP | JEQ | JNE | JGT;
+dopr: LDR | STR;
 boperand: LIT | SYM | '%' SYM | '*' LIT | '*' SYM | '*' REG | '*' '[' REG ']' | '*' '[' REG '+' LIT ']' | '*' '[' REG '+' SYM ']';
 doperand: '$' LIT | '$' SYM | LIT | SYM | '%' SYM | REG | '[' REG ']' | '[' REG '+' LIT ']' | '[' REG '+' SYM ']';
 %%

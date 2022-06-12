@@ -50,24 +50,45 @@ extern int yydebug;
   enum yytokentype
   {
     LABEL = 258,
-    NADR = 259,
-    REGD = 260,
-    REGS = 261,
-    BOPR = 262,
-    DOPR = 263,
-    GLOBAL = 264,
-    EXTERN = 265,
-    SECTION = 266,
-    WORD = 267,
-    SKIP = 268,
-    ASCII = 269,
-    EQU = 270,
-    END = 271,
-    REG = 272,
-    LIT = 273,
-    STRING = 274,
-    SYM = 275,
-    ENDL = 276
+    HALT = 259,
+    INT = 260,
+    IRET = 261,
+    CALL = 262,
+    RET = 263,
+    JMP = 264,
+    JEQ = 265,
+    JNE = 266,
+    JGT = 267,
+    PUSH = 268,
+    POP = 269,
+    XCHG = 270,
+    ADD = 271,
+    SUB = 272,
+    MUL = 273,
+    DIV = 274,
+    CMP = 275,
+    NOT = 276,
+    AND = 277,
+    OR = 278,
+    XOR = 279,
+    TEST = 280,
+    SHL = 281,
+    SHR = 282,
+    LDR = 283,
+    STR = 284,
+    GLOBAL = 285,
+    EXTERN = 286,
+    SECTION = 287,
+    WORD = 288,
+    SKIP = 289,
+    ASCII = 290,
+    EQU = 291,
+    END = 292,
+    REG = 293,
+    LIT = 294,
+    STRING = 295,
+    SYM = 296,
+    ENDL = 297
   };
 #endif
 
@@ -75,12 +96,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 6 "misc/parser.y"
+#line 5 "misc/parser.y"
 
 	int intv;
 	char *stringv;
 
-#line 84 "misc/parser.h"
+#line 105 "misc/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
