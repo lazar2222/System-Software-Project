@@ -4,22 +4,17 @@
 #include <vector>
 #include "parser.h"
 
-extern int line;
+extern int yylineno;
 void yyerror(const char *s);
 
 enum ADDRESSING {LITERAL_IMM,SYMBOL_IMM,LITERAL_MEMDIR,SYMBOL_MEMDIR,SYMBOL_PCREL,REGDIR,REGIND,LITERAL_REGIND,SYMBOL_REGIND};
 enum INSTRUCTION_TYPES {NADR,REGD,REGS,BOPR,DOPR};
+enum ELEMENT_TYPE {LITERAL,SYMBOL,NEGATIVE_LITERAL,NEGATIVE_SYMBOL};
 
 union symLit
 {
 	int literal;
 	char* symbol;
-};
-
-struct vectElem
-{
-	char type;
-	union  symLit;
 };
 
 struct operand
@@ -35,20 +30,35 @@ struct instruction
 	enum INSTRUCTION_TYPES instructionType;
 	int regD;
 	int regS;
-	struct operand;
+	struct operand op;
 };
 
-
+struct vectElem
+{
+	enum ELEMENT_TYPE type;
+	union symLit value;
+};
 
 struct directive
 {
 	enum yytokentype directiveType;
 	union symLit sl;
-	std::vector<vectElem> list;
+	std::vector<vectElem>* list;
 };
 
-union unitOfAssembly {
-	struct instruction;
+union YYSTYPE
+{
+	int intv;
+	char* stringv;
+	struct operand op;
+	struct instruction ins;
+	struct vectElem ve;
+	std::vector<vectElem>* list;
+	struct directive dir;
 };
+
+void emitInstruction(struct instruction inst);
+void emitDirective(struct directive dir);
+void registerLabel(char* name);
 
 #endif //SSPROJ_ASSEMBLER_HPP

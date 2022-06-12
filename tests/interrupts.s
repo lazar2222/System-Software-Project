@@ -10,6 +10,7 @@
 .equ term_out, 0xFF00
 .equ term_in, 0xFF02
 .equ asciiCode, 84 # ascii(’T’)
+.equ __a, b+c-(d-e)+(-f-g)+5--8
 # prekidna rutina za reset
 isr_reset:
     jmp myStart

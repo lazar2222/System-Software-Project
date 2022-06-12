@@ -1,1 +1,6 @@
 .idea/
+misc/lexer.c
+misc/lexer.h
+misc/parser.c
+misc/parser.h
+assembler

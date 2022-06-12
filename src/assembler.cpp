@@ -5,8 +5,6 @@
 
 using namespace  std;
 
-int line = 1;
-
 int main(int argc,char** argv)
 {
 	// Open a file handle to a particular file:
@@ -25,7 +23,21 @@ int main(int argc,char** argv)
 }
 
 void yyerror(const char *s) {
-	cout << "EEK, parse error on line " << line << "!  Message: " << s << endl;
-	// might as well halt now:
+	cout<<"Parse error on line: "<<yylineno<<" "<<s<<endl;
 	exit(-1);
+}
+
+void emitInstruction(struct instruction inst)
+{
+	cout<<"INST"<<inst.opcode<<endl;
+}
+
+void emitDirective(struct directive dir)
+{
+	cout<<"DIR"<<dir.directiveType<<endl;
+}
+
+void registerLabel(char* name)
+{
+	cout<<"LAB"<<name<<endl;
 }

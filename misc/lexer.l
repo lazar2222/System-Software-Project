@@ -6,8 +6,11 @@
 	int regNum(char* str);
 %}
 %option noyywrap
+%option yylineno
+%option nodefault
+%option warn
 REG (r[0-7])|sp|pc|psw
-INTLIT [-+]?[1-9][0-9]*
+INTLIT [1-9][0-9]*
 HEXLIT 0[xX][0-9A-Fa-f]*
 OCTLIT 0[0-7]*
 LIT {INTLIT}|{HEXLIT}|{OCTLIT}
@@ -65,12 +68,13 @@ str                     {return STR;}
 ,                       {return ',';}
 [ \t\f]                 {}
 #[^\n]*                 {}
-\n                      {line++;return ENDL;}
+\n                      {return ENDL;}
+.                       {char errmsg[20] = "unexpected token: "; errmsg[18]=yytext[0]; errmsg[19]='\0'; yyerror(errmsg);}
 %%
 int regNum(char* str)
 {
 	int val=-1;
-	if(str[0]=='r' || strlen(str)==2)
+	if(str[0]=='r' && strlen(str)==2)
 	{
 		val=str[1]-'0';
 	}
