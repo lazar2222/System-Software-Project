@@ -161,7 +161,6 @@ int main(int argc,char** argv)
 	ticx.lastInt=chrono::duration_cast< std::chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()).count();
 	while(ccx.running)
 	{
-		//cout<<hex<<ccx.r[7]<<endl;
 		executeInst(ccx);
 		serveInterrupts(ccx);
 		timerUpdate(ticx);
