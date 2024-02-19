@@ -5,9 +5,9 @@
 #include "parser.h"
 
 extern int yylineno;
-void yyerror(const char *s);
+void yyerror(void* context,const char *s);
 
-enum ADDRESSING {LITERAL_IMM,SYMBOL_IMM,LITERAL_MEMDIR,SYMBOL_MEMDIR,SYMBOL_PCREL,REGDIR,REGIND,LITERAL_REGIND,SYMBOL_REGIND};
+enum ADDRESSING {LITERAL_IMM,SYMBOL_IMM,LITERAL_MEMDIR,SYMBOL_MEMDIR,SYMBOL_PCREL,REGDIR,REGIND,LITERAL_REGIND,SYMBOL_REGIND,PRD2,POI2};
 enum INSTRUCTION_TYPES {NADR,REGD,REGS,BOPR,DOPR};
 enum ELEMENT_TYPE {LITERAL,SYMBOL,NEGATIVE_LITERAL,NEGATIVE_SYMBOL};
 
@@ -36,6 +36,7 @@ struct instruction
 struct vectElem
 {
 	enum ELEMENT_TYPE type;
+	unsigned char classifier;
 	union symLit value;
 };
 
@@ -57,8 +58,8 @@ union YYSTYPE
 	struct directive dir;
 };
 
-void emitInstruction(struct instruction inst);
-void emitDirective(struct directive dir);
-void registerLabel(char* name);
+void emitInstruction(struct instruction inst,void* context);
+void emitDirective(struct directive dir,void* context);
+void registerLabel(char* name,void* context);
 
 #endif //SSPROJ_ASSEMBLER_HPP

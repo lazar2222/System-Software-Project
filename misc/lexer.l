@@ -14,7 +14,7 @@ INTLIT [1-9][0-9]*
 HEXLIT 0[xX][0-9A-Fa-f]*
 OCTLIT 0[0-7]*
 LIT {INTLIT}|{HEXLIT}|{OCTLIT}
-STRING ".*?"
+STRING ["].*["]
 IDENT [a-zA-Z_\.][a-zA-Z_\.0-9]*
 %%
 {IDENT}:                {yylval.stringv = strdup(yytext); yylval.stringv[strlen(yylval.stringv)-1]='\0'; return LABEL;}
@@ -69,7 +69,7 @@ str                     {return STR;}
 [ \t\f]                 {}
 #[^\n]*                 {}
 \n                      {return ENDL;}
-.                       {char errmsg[20] = "unexpected token: "; errmsg[18]=yytext[0]; errmsg[19]='\0'; yyerror(errmsg);}
+.                       {char errmsg[20] = "unexpected token: "; errmsg[18]=yytext[0]; errmsg[19]='\0'; yyerror(nullptr,errmsg);}
 %%
 int regNum(char* str)
 {
@@ -97,7 +97,7 @@ int regNum(char* str)
 		error[0]='\0';
 		strcat(error,"Invalid register: ");
 		strcat(error,str);
-		yyerror(error);
+		yyerror(error,nullptr);
 		free(error);
 		return -1;
 	}

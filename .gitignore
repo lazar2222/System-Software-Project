@@ -4,3 +4,8 @@ misc/lexer.h
 misc/parser.c
 misc/parser.h
 assembler
+objdump
+linker
+emulator
+tests/*.o 
+tests/*.hex

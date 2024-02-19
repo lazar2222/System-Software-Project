@@ -7,6 +7,7 @@
 %}
 %define api.value.type {union YYSTYPE}
 %define parse.error verbose
+%parse-param {void* context}
 
 %token <stringv> LABEL
 %token HALT
@@ -91,12 +92,13 @@ tasm: tasm endls line | line
 endls: endls ENDL | ENDL;
 
 line:
-	LABEL {registerLabel($1);} endls operation
+	LABEL {registerLabel($1,context);} operation
+	| LABEL {registerLabel($1,context);}
 	| operation
 ;
 operation:
-	directive       {emitDirective($1);}
-	| instruction   {emitInstruction($1);}
+	directive       {emitDirective($1,context); if($1.directiveType==END){YYACCEPT;}}
+	| instruction   {emitInstruction($1,context);}
 ;
 
 directive:
